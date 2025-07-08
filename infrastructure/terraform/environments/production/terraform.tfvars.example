@@ -1,0 +1,221 @@
+# ITSANDBOX Production Environment Configuration Example
+# このファイルをコピーして terraform.tfvars として使用してください
+
+# ====================
+# AWS Organization Configuration
+# ====================
+
+# AWS Organization ID (AWS Organizations コンソールから取得)
+organization_id = "o-example123456"
+
+# Master Account ID (請求アカウントのID)
+master_account_id = "123456789012"
+
+# Cross-account access用のExternal ID (安全なランダム文字列)
+external_id = "ITSANDBOX-2024-SecureExternalId-RandomString123"
+
+# 信頼されたアカウントID (他のAWSアカウントからのアクセスを許可)
+trusted_account_ids = [
+  "123456789012",  # Master Account
+  "234567890123",  # Shared Services Account
+  "345678901234"   # Security Account
+]
+
+# プロジェクト専用アカウントID
+project_account_ids = [
+  "456789012345",  # Website Project Account
+  "567890123456",  # API Project Account
+  "678901234567"   # Infrastructure Project Account
+]
+
+# ====================
+# Cost Management
+# ====================
+
+# 月額予算上限 (USD)
+organization_budget_limit = "100"
+
+# Slack通知用Webhook URL (オプション)
+slack_webhook_url = "https://hooks.slack.com/services/YOUR/SLACK/WEBHOOK"
+
+# ====================
+# Team Configuration
+# ====================
+
+# 管理者メールアドレス
+admin_emails = [
+  "hoseiitsandbox@gmail.com",
+  "admin1@hosei.ac.jp",
+  "admin2@hosei.ac.jp"
+]
+
+# セキュリティ通知用メールアドレス
+security_notification_email = "security@hosei.ac.jp"
+
+# ====================
+# Project Teams
+# ====================
+
+# Website Project Team
+website_project_leads = [
+  "arn:aws:iam::123456789012:user/itsandbox-website-lead1",
+  "arn:aws:iam::123456789012:user/itsandbox-website-lead2"
+]
+
+website_developers = [
+  "arn:aws:iam::123456789012:user/itsandbox-dev1",
+  "arn:aws:iam::123456789012:user/itsandbox-dev2",
+  "arn:aws:iam::123456789012:user/itsandbox-dev3"
+]
+
+website_viewers = [
+  "arn:aws:iam::123456789012:user/itsandbox-viewer1"
+]
+
+# API Project Team
+api_project_leads = [
+  "arn:aws:iam::123456789012:user/itsandbox-api-lead1"
+]
+
+api_developers = [
+  "arn:aws:iam::123456789012:user/itsandbox-api-dev1",
+  "arn:aws:iam::123456789012:user/itsandbox-api-dev2"
+]
+
+api_viewers = []
+
+# Infrastructure Project Team
+infra_project_leads = [
+  "arn:aws:iam::123456789012:user/itsandbox-infra-lead1"
+]
+
+infra_developers = [
+  "arn:aws:iam::123456789012:user/itsandbox-infra-dev1"
+]
+
+infra_viewers = []
+
+# Sandbox Project Team
+sandbox_project_leads = [
+  "arn:aws:iam::123456789012:user/itsandbox-sandbox-lead1"
+]
+
+sandbox_developers = [
+  "arn:aws:iam::123456789012:user/itsandbox-student1",
+  "arn:aws:iam::123456789012:user/itsandbox-student2",
+  "arn:aws:iam::123456789012:user/itsandbox-student3"
+]
+
+sandbox_viewers = []
+
+# ====================
+# Domain Configuration
+# ====================
+
+# ドメイン名
+domain_name = "itsandbox.hosei.ac.jp"
+
+# Route 53ホストゾーンを作成するか
+create_hosted_zone = false
+
+# SSL証明書を作成するか
+create_ssl_certificate = false
+
+# ====================
+# Environment Settings
+# ====================
+
+# 環境名
+environment = "production"
+
+# 詳細監視を有効にするか
+enable_detailed_monitoring = true
+
+# バックアップを有効にするか
+enable_backup = true
+
+# ログ・バックアップの保持期間（日）
+retention_days = 90
+
+# ====================
+# Security Settings
+# ====================
+
+# AWS WAFを有効にするか
+enable_waf = true
+
+# AWS Shield Advancedを有効にするか（有料）
+enable_shield = false
+
+# AWS GuardDutyを有効にするか
+enable_guardduty = true
+
+# AWS Configを有効にするか
+enable_config = true
+
+# ====================
+# Development Features
+# ====================
+
+development_features = {
+  enable_debug_logging     = false
+  enable_x_ray_tracing    = true
+  enable_local_development = false
+  debug_retention_days    = 7
+}
+
+# ====================
+# Performance Settings
+# ====================
+
+performance_settings = {
+  cloudfront_price_class         = "PriceClass_100"     # 米国、カナダ、ヨーロッパ
+  lambda_reserved_concurrency    = 10
+  dynamodb_billing_mode         = "PAY_PER_REQUEST"
+  s3_intelligent_tiering        = true
+}
+
+# ====================
+# Compliance Settings
+# ====================
+
+compliance_settings = {
+  enable_cloudtrail_data_events = true
+  enable_vpc_flow_logs         = true
+  enable_access_logging        = true
+  encryption_at_rest_required  = true
+  encryption_in_transit_required = true
+}
+
+# ====================
+# Disaster Recovery
+# ====================
+
+disaster_recovery = {
+  enable_cross_region_backup = false
+  backup_retention_days     = 30
+  rto_hours                = 4
+  rpo_hours                = 24
+  secondary_region         = "us-west-2"
+}
+
+# ====================
+# Additional Tags
+# ====================
+
+additional_tags = {
+  Department    = "経営システム工学科"
+  University    = "法政大学"
+  Contact      = "hoseiitsandbox@gmail.com"
+  Purpose      = "IT Innovation Community"
+  Compliance   = "Educational"
+}
+
+cost_allocation_tags = [
+  "Project",
+  "Environment", 
+  "Owner",
+  "CostCenter",
+  "Team",
+  "Department"
+]

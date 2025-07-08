@@ -1,0 +1,210 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    @apply font-sans antialiased;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-semibold;
+  }
+}
+
+@layer components {
+  /* ボタンのベーススタイル */
+  .btn {
+    @apply inline-flex items-center justify-center rounded-lg font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-primary {
+    @apply btn bg-primary-500 text-white hover:bg-primary-600 focus:ring-primary-500 shadow-lg hover:shadow-xl;
+  }
+
+  .btn-secondary {
+    @apply btn bg-secondary-500 text-white hover:bg-secondary-600 focus:ring-secondary-500 shadow-lg hover:shadow-xl;
+  }
+
+  .btn-outline {
+    @apply btn border-2 border-primary-500 text-primary-500 hover:bg-primary-500 hover:text-white focus:ring-primary-500;
+  }
+
+  .btn-ghost {
+    @apply btn text-gray-700 hover:bg-gray-100 focus:ring-gray-500;
+  }
+
+  /* サイズバリエーション */
+  .btn-sm {
+    @apply px-3 py-1.5 text-sm;
+  }
+
+  .btn-md {
+    @apply px-4 py-2 text-base;
+  }
+
+  .btn-lg {
+    @apply px-6 py-3 text-lg;
+  }
+
+  .btn-xl {
+    @apply px-8 py-4 text-xl;
+  }
+
+  /* カードコンポーネント */
+  .card {
+    @apply bg-white rounded-xl shadow-lg border border-gray-100 transition-all duration-200;
+  }
+
+  .card-hover {
+    @apply card hover:shadow-xl hover:-translate-y-1;
+  }
+
+  /* グラデーション背景 */
+  .gradient-bg {
+    @apply bg-gradient-to-br from-primary-50 via-white to-accent-50;
+  }
+
+  .gradient-primary {
+    @apply bg-gradient-to-r from-primary-500 to-primary-600;
+  }
+
+  .gradient-secondary {
+    @apply bg-gradient-to-r from-secondary-500 to-secondary-600;
+  }
+
+  /* テキストグラデーション */
+  .text-gradient {
+    @apply bg-gradient-to-r from-primary-500 to-accent-500 bg-clip-text text-transparent;
+  }
+
+  /* アニメーション */
+  .animate-bounce-slow {
+    animation: bounce 2s infinite;
+  }
+
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  /* フォーカス可視化の改善 */
+  .focus-visible {
+    @apply focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2;
+  }
+}
+
+@layer utilities {
+  /* カスタムスクロールバー */
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(156, 163, 175, 0.5) transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: rgba(156, 163, 175, 0.5);
+    border-radius: 3px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    background: rgba(156, 163, 175, 0.7);
+  }
+
+  /* テキスト選択のカスタマイズ */
+  .selection-primary::selection {
+    @apply bg-primary-200 text-primary-900;
+  }
+
+  /* ユーティリティクラス */
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .text-pretty {
+    text-wrap: pretty;
+  }
+}
+
+/* カスタムアニメーション */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes slideInFromLeft {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInFromRight {
+  0% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.animate-slide-in-left {
+  animation: slideInFromLeft 0.5s ease-out;
+}
+
+.animate-slide-in-right {
+  animation: slideInFromRight 0.5s ease-out;
+}
+
+/* ローディングアニメーション */
+.loading-dots {
+  @apply inline-flex space-x-1;
+}
+
+.loading-dots > div {
+  @apply w-2 h-2 bg-primary-500 rounded-full animate-pulse;
+  animation-delay: calc(var(--i) * 0.1s);
+}
+
+/* プリント用スタイル */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  
+  .print-only {
+    display: block !important;
+  }
+}
+
+/* 高コントラストモード対応 */
+@media (prefers-contrast: high) {
+  .btn-primary {
+    @apply border-2 border-primary-700;
+  }
+  
+  .card {
+    @apply border-2 border-gray-300;
+  }
+}
