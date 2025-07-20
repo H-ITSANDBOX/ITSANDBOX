@@ -15,101 +15,97 @@ provider "aws" {
   region = var.aws_region
 }
 
-# AWS Organization
-resource "aws_organizations_organization" "itsandbox" {
-  aws_service_access_principals = [
-    "cloudtrail.amazonaws.com",
-    "config.amazonaws.com",
-    "sso.amazonaws.com",
-    "account.amazonaws.com",
-    "budgets.amazonaws.com",
-  ]
+# AWS Organization - temporarily disabled
+# resource "aws_organizations_organization" "itsandbox" {
+#   aws_service_access_principals = [
+#     "cloudtrail.amazonaws.com",
+#     "config.amazonaws.com",
+#     "sso.amazonaws.com",
+#     "account.amazonaws.com", 
+#     "budgets.amazonaws.com",
+#     "guardduty.amazonaws.com",
+#     "securityhub.amazonaws.com",
+#   ]
+#
+#   feature_set = "ALL"
+# }
 
-  feature_set = "ALL"
+# Organizational Units - temporarily disabled
+# resource "aws_organizations_organizational_unit" "security" {
+#   name      = "Security"
+#   parent_id = aws_organizations_organization.itsandbox.roots[0].id
+# }
+#
+# resource "aws_organizations_organizational_unit" "production" {
+#   name      = "Production"
+#   parent_id = aws_organizations_organization.itsandbox.roots[0].id
+# }
+#
+# resource "aws_organizations_organizational_unit" "projects" {
+#   name      = "Projects"  
+#   parent_id = aws_organizations_organization.itsandbox.roots[0].id
+# }
 
-  tags = {
-    Name        = "ITSANDBOX Organization"
-    Environment = "master"
-    Project     = "ITSANDBOX"
-  }
-}
-
-# Organizational Units
-resource "aws_organizations_organizational_unit" "security" {
-  name      = "Security"
-  parent_id = aws_organizations_organization.itsandbox.roots[0].id
-}
-
-resource "aws_organizations_organizational_unit" "production" {
-  name      = "Production"
-  parent_id = aws_organizations_organization.itsandbox.roots[0].id
-}
-
-resource "aws_organizations_organizational_unit" "projects" {
-  name      = "Projects"
-  parent_id = aws_organizations_organization.itsandbox.roots[0].id
-}
-
-# Service Control Policies
-resource "aws_organizations_policy" "cost_control" {
-  name        = "ITSANDBOX-Cost-Control"
-  description = "Cost control policy for ITSANDBOX"
-  type        = "SERVICE_CONTROL_POLICY"
-
-  content = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Effect = "Deny"
-        Action = [
-          "ec2:RunInstances"
-        ]
-        Resource = "*"
-        Condition = {
-          StringNotEquals = {
-            "ec2:InstanceType" = [
-              "t3.micro",
-              "t3.small",
-              "t3.medium"
-            ]
-          }
-        }
-      },
-      {
-        Effect = "Deny"
-        Action = [
-          "rds:CreateDBInstance"
-        ]
-        Resource = "*"
-        Condition = {
-          StringNotEquals = {
-            "rds:DatabaseClass" = [
-              "db.t3.micro",
-              "db.t3.small"
-            ]
-          }
-        }
-      },
-      {
-        Effect = "Deny"
-        Action = [
-          "account:EnableRegion",
-          "account:DisableRegion"
-        ]
-        Resource = "*"
-        Condition = {
-          StringNotEquals = {
-            "aws:RequestedRegion" = [
-              "us-east-1",
-              "us-west-2",
-              "ap-northeast-1"
-            ]
-          }
-        }
-      }
-    ]
-  })
-}
+# Service Control Policies - temporarily disabled
+# resource "aws_organizations_policy" "cost_control" {
+#   name        = "ITSANDBOX-Cost-Control"
+#   description = "Cost control policy for ITSANDBOX"
+#   type        = "SERVICE_CONTROL_POLICY"
+#
+#   content = jsonencode({
+#     Version = "2012-10-17"
+#     Statement = [
+#       {
+#         Effect = "Deny"
+#         Action = [
+#           "ec2:RunInstances"
+#         ]
+#         Resource = "*"
+#         Condition = {
+#           StringNotEquals = {
+#             "ec2:InstanceType" = [
+#               "t3.micro",
+#               "t3.small",
+#               "t3.medium"
+#             ]
+#           }
+#         }
+#       },
+#       {
+#         Effect = "Deny"
+#         Action = [
+#           "rds:CreateDBInstance"
+#         ]
+#         Resource = "*"
+#         Condition = {
+#           StringNotEquals = {
+#             "rds:DatabaseClass" = [
+#               "db.t3.micro",
+#               "db.t3.small"
+#             ]
+#           }
+#         }
+#       },
+#       {
+#         Effect = "Deny"
+#         Action = [
+#           "account:EnableRegion",
+#           "account:DisableRegion"
+#         ]
+#         Resource = "*"
+#         Condition = {
+#           StringNotEquals = {
+#             "aws:RequestedRegion" = [
+#               "us-east-1",
+#               "us-west-2",
+#               "ap-northeast-1"
+#             ]
+#           }
+#         }
+#       }
+#     ]
+#   })
+# }
 
 # Budget for overall organization
 resource "aws_budgets_budget" "organization_budget" {
@@ -119,9 +115,9 @@ resource "aws_budgets_budget" "organization_budget" {
   limit_unit   = "USD"
   time_unit    = "MONTHLY"
 
-  cost_filters = {
-    TagKey = ["Project"]
-    TagValue = ["ITSANDBOX"]
+  cost_filter {
+    name   = "Service"
+    values = ["Amazon Elastic Compute Cloud - Compute"]
   }
 
   notification {
@@ -147,7 +143,7 @@ resource "aws_cloudtrail" "organization_trail" {
   s3_bucket_name               = aws_s3_bucket.cloudtrail_bucket.bucket
   include_global_service_events = true
   is_multi_region_trail        = true
-  is_organization_trail        = true
+  is_organization_trail        = false
   enable_log_file_validation   = true
 
   depends_on = [aws_s3_bucket_policy.cloudtrail_bucket_policy]
@@ -349,4 +345,46 @@ resource "aws_cloudwatch_dashboard" "cost_dashboard" {
       }
     ]
   })
+}
+
+# ====================
+# Security Services Integration
+# ====================
+
+# Security Services Module
+module "security_services" {
+  source = "../../../infrastructure/terraform/modules/security-services"
+
+  aws_region              = var.aws_region
+  environment            = "master"
+  organization_name      = "ITSANDBOX"
+  admin_email_addresses  = [var.admin_email]
+
+  # Enable all security services
+  enable_config       = true
+  enable_guardduty    = true
+  enable_security_hub = true
+
+  # Config settings
+  config_delivery_frequency = "TwentyFour_Hours"
+  
+  # GuardDuty settings
+  guardduty_finding_frequency = "FIFTEEN_MINUTES"
+  enable_s3_protection       = true
+  enable_malware_protection  = true
+  enable_kubernetes_protection = false  # Not needed for current architecture
+
+  # Security Hub settings
+  security_hub_auto_enable_controls = true
+  enable_cis_standard              = true
+  enable_aws_foundational_standard = true
+
+  tags = {
+    Environment = "master"
+    Project     = "ITSANDBOX"
+    ManagedBy   = "Terraform"
+    Purpose     = "Organization Security"
+  }
+
+# depends_on = [aws_organizations_organization.itsandbox]
 }
