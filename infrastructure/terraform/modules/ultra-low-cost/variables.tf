@@ -1,4 +1,4 @@
-# ITSANDBOX Production Environment Variables - Ultra-Low-Cost Edition
+# Variables for Ultra-Low-Cost ITSANDBOX Infrastructure
 
 variable "project_name" {
   description = "Name of the project"
@@ -58,14 +58,12 @@ variable "aws_access_key_id" {
   description = "AWS Access Key ID for GitHub Actions"
   type        = string
   sensitive   = true
-  default     = ""
 }
 
 variable "aws_secret_access_key" {
   description = "AWS Secret Access Key for GitHub Actions"
   type        = string
   sensitive   = true
-  default     = ""
 }
 
 variable "notification_webhook_url" {
@@ -77,17 +75,17 @@ variable "notification_webhook_url" {
 variable "lambda_zip_path" {
   description = "Path to Lambda deployment package"
   type        = string
-  default     = "../../backend/minimal-lambda.zip"
+  default     = "../../../backend/minimal-lambda.zip"
 }
 
 variable "common_tags" {
   description = "Common tags to be applied to all resources"
   type        = map(string)
   default = {
-    Project      = "ITSANDBOX"
-    Environment  = "Production"
-    ManagedBy    = "Terraform"
-    CostTarget   = "Under5USD"
+    Project     = "ITSANDBOX"
+    Environment = "Production"
+    ManagedBy   = "Terraform"
+    CostTarget  = "Under5USD"
     Architecture = "Ultra-Low-Cost"
   }
 }
