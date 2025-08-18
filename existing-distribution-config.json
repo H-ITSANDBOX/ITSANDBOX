@@ -1,0 +1,129 @@
+{
+    "ETag": "E2C49KWI6WDRR3",
+    "DistributionConfig": {
+        "CallerReference": "itsandbox-website-temp-2025-07-27",
+        "Aliases": {
+            "Quantity": 1,
+            "Items": [
+                "hosei-itsandbox.com"
+            ]
+        },
+        "DefaultRootObject": "",
+        "Origins": {
+            "Quantity": 1,
+            "Items": [
+                {
+                    "Id": "lambda-serverless-origin",
+                    "DomainName": "c53ft64qpvtbz65vtnghynf7ne0ziagq.lambda-url.ap-northeast-1.on.aws",
+                    "OriginPath": "",
+                    "CustomHeaders": {
+                        "Quantity": 0
+                    },
+                    "CustomOriginConfig": {
+                        "HTTPPort": 80,
+                        "HTTPSPort": 443,
+                        "OriginProtocolPolicy": "https-only",
+                        "OriginSslProtocols": {
+                            "Quantity": 3,
+                            "Items": [
+                                "TLSv1",
+                                "TLSv1.1",
+                                "TLSv1.2"
+                            ]
+                        },
+                        "OriginReadTimeout": 30,
+                        "OriginKeepaliveTimeout": 5
+                    },
+                    "ConnectionAttempts": 3,
+                    "ConnectionTimeout": 10,
+                    "OriginShield": {
+                        "Enabled": false
+                    },
+                    "OriginAccessControlId": ""
+                }
+            ]
+        },
+        "OriginGroups": {
+            "Quantity": 0
+        },
+        "DefaultCacheBehavior": {
+            "TargetOriginId": "lambda-serverless-origin",
+            "TrustedSigners": {
+                "Enabled": false,
+                "Quantity": 0
+            },
+            "TrustedKeyGroups": {
+                "Enabled": false,
+                "Quantity": 0
+            },
+            "ViewerProtocolPolicy": "redirect-to-https",
+            "AllowedMethods": {
+                "Quantity": 7,
+                "Items": [
+                    "HEAD",
+                    "DELETE",
+                    "POST",
+                    "GET",
+                    "OPTIONS",
+                    "PUT",
+                    "PATCH"
+                ],
+                "CachedMethods": {
+                    "Quantity": 2,
+                    "Items": [
+                        "HEAD",
+                        "GET"
+                    ]
+                }
+            },
+            "SmoothStreaming": false,
+            "Compress": true,
+            "LambdaFunctionAssociations": {
+                "Quantity": 0
+            },
+            "FunctionAssociations": {
+                "Quantity": 0
+            },
+            "FieldLevelEncryptionId": "",
+            "CachePolicyId": "4135ea2d-6df8-44a3-9df3-4b5a84be39ad",
+            "OriginRequestPolicyId": "88a5eaf4-2fd4-4709-b370-b4c650ea3fcf",
+            "GrpcConfig": {
+                "Enabled": false
+            }
+        },
+        "CacheBehaviors": {
+            "Quantity": 0
+        },
+        "CustomErrorResponses": {
+            "Quantity": 0
+        },
+        "Comment": "ITSANDBOX Serverless Homepage - Lambda Function URL Origin",
+        "Logging": {
+            "Enabled": false,
+            "IncludeCookies": false,
+            "Bucket": "",
+            "Prefix": ""
+        },
+        "PriceClass": "PriceClass_100",
+        "Enabled": true,
+        "ViewerCertificate": {
+            "CloudFrontDefaultCertificate": false,
+            "ACMCertificateArn": "arn:aws:acm:us-east-1:555111848813:certificate/617125a5-01cf-426b-b45f-90a2c9c3ddfa",
+            "SSLSupportMethod": "sni-only",
+            "MinimumProtocolVersion": "TLSv1.2_2021",
+            "Certificate": "arn:aws:acm:us-east-1:555111848813:certificate/617125a5-01cf-426b-b45f-90a2c9c3ddfa",
+            "CertificateSource": "acm"
+        },
+        "Restrictions": {
+            "GeoRestriction": {
+                "RestrictionType": "none",
+                "Quantity": 0
+            }
+        },
+        "WebACLId": "",
+        "HttpVersion": "http2",
+        "IsIPV6Enabled": true,
+        "ContinuousDeploymentPolicyId": "",
+        "Staging": false
+    }
+}

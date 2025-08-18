@@ -1,0 +1,41 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "EnhancedBillingAccess",
+      "Effect": "Allow",
+      "Action": [
+        "account:GetAccountInformation",
+        "account:GetContactInformation", 
+        "account:PutContactInformation",
+        "billing:GetSellerOfRecord",
+        "billing:GetContractInformation",
+        "billing:PutContractInformation",
+        "billing:GetBillingPreferences",
+        "billing:UpdateBillingPreferences",
+        "billing:GetIAMAccessPreference",
+        "billing:UpdateIAMAccessPreference",
+        "aws-portal:*Billing",
+        "aws-portal:*PaymentMethods",
+        "aws-portal:*Usage",
+        "payments:*",
+        "cur:*",
+        "ce:*",
+        "budgets:*",
+        "support:CreateCase",
+        "support:AddAttachmentsToSet"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "OrganizationsBillingAccess", 
+      "Effect": "Allow",
+      "Action": [
+        "organizations:DescribeOrganization",
+        "organizations:ListAccounts",
+        "organizations:DescribeAccount"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

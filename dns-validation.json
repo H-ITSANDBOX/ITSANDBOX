@@ -1,0 +1,17 @@
+{
+    "Changes": [
+        {
+            "Action": "CREATE",
+            "ResourceRecordSet": {
+                "Name": "_3dc2e2a85f68e508194daf2d536e758d.hosei-itsandbox.com.",
+                "Type": "CNAME",
+                "TTL": 300,
+                "ResourceRecords": [
+                    {
+                        "Value": "_e1634b453131289302b9092bf54aa83f.xlfgrmvvlj.acm-validations.aws."
+                    }
+                ]
+            }
+        }
+    ]
+}

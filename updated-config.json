@@ -1,0 +1,73 @@
+{
+    "CallerReference": "itsandbox-cf-1755271146",
+    "Comment": "ITSANDBOX CloudFront distribution with custom domain",
+    "Aliases": {
+        "Quantity": 1,
+        "Items": ["hosei-itsandbox.com"]
+    },
+    "DefaultCacheBehavior": {
+        "TargetOriginId": "lambda-function-url",
+        "ViewerProtocolPolicy": "redirect-to-https",
+        "MinTTL": 0,
+        "DefaultTTL": 3600,
+        "MaxTTL": 86400,
+        "ForwardedValues": {
+            "QueryString": false,
+            "Cookies": {
+                "Forward": "none"
+            }
+        },
+        "Compress": true,
+        "AllowedMethods": {
+            "Quantity": 7,
+            "Items": [
+                "GET",
+                "HEAD",
+                "OPTIONS",
+                "PUT",
+                "POST",
+                "PATCH",
+                "DELETE"
+            ],
+            "CachedMethods": {
+                "Quantity": 2,
+                "Items": [
+                    "GET",
+                    "HEAD"
+                ]
+            }
+        },
+        "TrustedSigners": {
+            "Enabled": false,
+            "Quantity": 0
+        }
+    },
+    "Origins": {
+        "Quantity": 1,
+        "Items": [
+            {
+                "Id": "lambda-function-url",
+                "DomainName": "c53ft64qpvtbz65vtnghynf7ne0ziagq.lambda-url.ap-northeast-1.on.aws",
+                "CustomOriginConfig": {
+                    "HTTPPort": 443,
+                    "HTTPSPort": 443,
+                    "OriginProtocolPolicy": "https-only",
+                    "OriginSslProtocols": {
+                        "Quantity": 1,
+                        "Items": [
+                            "TLSv1.2"
+                        ]
+                    }
+                }
+            }
+        ]
+    },
+    "Enabled": true,
+    "PriceClass": "PriceClass_100",
+    "ViewerCertificate": {
+        "ACMCertificateArn": "arn:aws:acm:us-east-1:555111848813:certificate/617125a5-01cf-426b-b45f-90a2c9c3ddfa",
+        "SSLSupportMethod": "sni-only",
+        "MinimumProtocolVersion": "TLSv1.2_2021",
+        "CertificateSource": "acm"
+    }
+}
